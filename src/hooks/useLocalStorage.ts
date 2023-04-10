@@ -1,7 +1,15 @@
 import { useState } from "react";
 
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
-  const [storedValue, setStoredValue] = useState<T>(() => {
+type Item = {
+  name: string;
+  url: string;
+};
+
+export function useLocalStorage(
+  key: string,
+  initialValue: Item[]
+): [Item[], (value: Item[]) => void, (index: number) => void] {
+  const [storedValue, setStoredValue] = useState<Item[]>(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -11,15 +19,24 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T)
     }
   });
 
-  const setValue = (value: T) => {
+  const setValue = (value: Item[]) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.error(error);
     }
   };
 
-  return [storedValue, setValue];
+  const removeValue = (index: number) => {
+    try {
+      const newValue = storedValue.filter((_, i) => i !== index);
+      setStoredValue(newValue);
+      window.localStorage.setItem(key, JSON.stringify(newValue));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue, removeValue];
 }

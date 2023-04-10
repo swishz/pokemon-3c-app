@@ -1,6 +1,6 @@
-import CardContent from "components/CardContent";
+import CardContent from "../CardContent/index";
 import "./listContent.css";
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ function ListContent() {
   return (
     <Flex className="container" flexDirection="row">
       <Box className="pokemon-list" width="50%">
+        <Text className="favorite-title">POKÉMONS</Text>
         <SimpleGrid
           className="grid-container"
           spacing={4}
@@ -43,19 +44,24 @@ function ListContent() {
         </SimpleGrid>
       </Box>
       <Box className="favorite-list" width="50%">
+        <Text className="favorite-title">FAVORITOS</Text>
         <SimpleGrid
           className="grid-container"
           spacing={4}
           templateColumns="repeat(minmax(200px, 1fr))"
         >
-          {favoritePokemons.map((pokemon: any, i: number) => (
-            <CardContent
-              key={i}
-              name={pokemon.name}
-              url={pokemon.url}
-              isFavorite={favoritePokemons.includes(pokemon)}
-            />
-          ))}
+          {pokemonList.length > 0 ? (
+            favoritePokemons.map((pokemon: any, i: number) => (
+              <CardContent
+                key={i}
+                name={pokemon.name}
+                url={pokemon.url}
+                isFavorite={favoritePokemons.includes(pokemon)}
+              />
+            ))
+          ) : (
+            <p>No Pokémon found.</p>
+          )}
         </SimpleGrid>
       </Box>
     </Flex>

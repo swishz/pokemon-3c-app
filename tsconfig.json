@@ -16,9 +16,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "paths": {
       "@components/*": ["components/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", ".babelrc", "jest.config.ts", "declaration.d.ts"]
 }

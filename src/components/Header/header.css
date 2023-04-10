@@ -1,16 +1,16 @@
 .header {
   display: flex;
-  position: sticky;
+  flex-direction: row;
+  justify-content: space-between;
   top: 0;
   left: 0;
   width: 100%;
   background-color: blue;
   color: white;
   padding: 20px;
-  align-content: center;
 }
 
 .header-image {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }

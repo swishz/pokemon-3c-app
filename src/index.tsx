@@ -15,7 +15,7 @@ import store from "./redux/store";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="*" element={<App />}>
       <Route path="home" element={<Home />} />
       <Route path="list" element={<List />} />
     </Route>

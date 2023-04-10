@@ -5,16 +5,22 @@ import { FcLike, FcDislike } from "react-icons/fc";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { favoritePokemon, unfavoritePokemon } from "../../redux/pokemonSlice";
+import { useLocalStorage } from "hooks/useLocalStorage";
 
 interface CardProps {
   name: string;
   url: string;
   isFavorite?: boolean;
 }
+interface Pokemon {
+  name: string;
+  url: string;
+}
 
 function CardContent({ name, url, isFavorite }: CardProps) {
   const [image, setImage] = useState("");
   const dispatch = useDispatch();
+  const [favoriteList, setFavoriteList] = useLocalStorage("favorites", []);
 
   useEffect(() => {
     const axiosImage = async () => {
@@ -26,13 +32,15 @@ function CardContent({ name, url, isFavorite }: CardProps) {
       }
     };
     axiosImage();
-  }, [url]);
+  });
 
   const handleLike = () => {
     if (isFavorite) {
       dispatch(unfavoritePokemon({ name, url }));
+      setFavoriteList(favoriteList.filter((pokemon) => pokemon.name !== name));
     } else {
       dispatch(favoritePokemon({ name, url }));
+      setFavoriteList([...favoriteList, { name, url } as Pokemon]);
     }
   };
 
@@ -46,7 +54,7 @@ function CardContent({ name, url, isFavorite }: CardProps) {
       <Image
         className="pokemon-img"
         borderRadius="full"
-        boxSize="50px"
+        boxSize="70px"
         src={image}
         alt={name}
         onError={(e) => {
